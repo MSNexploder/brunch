@@ -7,18 +7,19 @@ YamlConfig = require('./yaml_config').YamlConfig
 
 class DSL
   constructor: ->
+    @rootPath = '.'
     @matchers = []
     @context = {}
     @locals = {
-      files: (paths) => @files paths
+      files: => @files.apply this, arguments
       require: require
       global: global
       process: process
       module: module
     }
 
-  files: (paths) ->
-    matcher = new PathMatcher(paths)
+  files: (paths...) ->
+    matcher = new PathMatcher(@rootPath, paths)
     @matchers.push matcher
     matcher
 
@@ -54,7 +55,14 @@ dsl = new DSL
 exports.matchers = dsl.matchers
 
 exports.run = -> dsl.run.apply dsl, arguments
-exports.loadConfigFile = -> dsl.runFile.apply dsl, arguments
+exports.loadConfigFile = (path, options) ->
+  dsl.rootPath = options.rootPath
+  opts = dsl.runFile(path)
+
+  # workaround for legacy buildPath setting
+  opts.buildPath = options.buildPath
+  opts.rootPath = options.rootPath
+  opts
 
 exports.loadYamlConfigFile = (path, options) ->
   yaml = new YamlConfig(path, options)

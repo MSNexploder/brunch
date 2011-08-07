@@ -1,9 +1,11 @@
 _ = require 'underscore'
+path = require 'path'
 
 class exports.PathMatcher
-  constructor: (filePattern) ->
-    filePattern = if _.isArray(filePattern) then filePattern else [filePattern]
+  constructor: (rootPath, filePattern) ->
+    filePattern = _.flatten [filePattern]
 
+    @rootPath = rootPath
     @options =
       filePattern: filePattern
 
@@ -12,5 +14,5 @@ class exports.PathMatcher
     _.extend(@options, options)
     @
 
-  output: (path) ->
-    @options.output = path
+  output: (file) ->
+    @options.output = path.resolve(@rootPath, file)
