@@ -69,7 +69,7 @@ module.exports = testCase(
         app = fs.readFileSync('brunch/build/web/js/app.js', 'utf8')
         test.ok app.match(/\/\/anotherLib/), 'app.js contains content of new created file anotherLib'
         test.done()
-      400
+      500
     )
 
   'update package dependencies when file has been removed': (test) ->
@@ -82,7 +82,7 @@ module.exports = testCase(
         app = fs.readFileSync('brunch/build/web/js/app.js', 'utf8')
         test.ok (not app.match(/\/\/anotherLib/)), 'app.js contains content of new created file anotherLib'
         test.done()
-      400
+      500
     )
 
   'app should work properly when minified': (test) ->
