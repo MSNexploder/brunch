@@ -54,22 +54,22 @@ exports.run = ->
     options = exports.loadOptionsFromArguments opts, options
     brunch.new options, ->
       configPath = exports.generateConfigPath opts[1]
-      options = exports.loadConfigFile configPath, options
       options = exports.loadOptionsFromArguments opts, options
+      options = exports.loadConfigFile configPath, options
       brunch.build options
   ).help('Create new brunch project')
 
   parser.command('build').callback( (opts) ->
     configPath = exports.generateConfigPath opts[1]
-    options = exports.loadConfigFile configPath, options
     options = exports.loadOptionsFromArguments opts, options
+    options = exports.loadConfigFile configPath, options
     brunch.build options
   ).help('Build a brunch project')
 
   parser.command('watch').callback( (opts) ->
     configPath = exports.generateConfigPath opts[1]
-    options = exports.loadConfigFile configPath, options
     options = exports.loadOptionsFromArguments opts, options
+    options = exports.loadConfigFile configPath, options
     brunch.watch options
   ).help('Watch brunch directory and rebuild if something changed')
 
