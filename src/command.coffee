@@ -3,6 +3,7 @@ parser      = require 'nomnom'
 path        = require 'path'
 brunch      = require './brunch'
 helpers     = require './helpers'
+dsl         = require './dsl'
 colors      = require('../vendor/termcolors').colors
 yaml        = require 'yaml'
 fs          = require 'fs'

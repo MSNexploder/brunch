@@ -6,6 +6,24 @@ fileUtil  = require 'file'
 _         = require 'underscore'
 sys       = require 'sys'
 
+coffeescript_support = """
+  var __slice = Array.prototype.slice;
+  var __hasProp = Object.prototype.hasOwnProperty;
+  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
+  var __extends = function(child, parent) {
+    for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
+    function ctor() { this.constructor = child; }
+    ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype;
+    return child;
+  };
+  var __indexOf = Array.prototype.indexOf || function(item) {
+    for (var i = 0, l = this.length; i < l; i++) {
+      if (this[i] === item) return i;
+    }
+    return -1;
+  };
+"""
+
 # copy single file and executes callback when done
 exports.copyFile = (source, destination, callback) ->
   read = fs.createReadStream source
@@ -118,3 +136,13 @@ exports.formatIsodate = (d) ->
     else
       n
   d.getUTCFullYear()+'-'+ pad(d.getUTCMonth()+1)+'-'+ pad(d.getUTCDate())+'T'+ pad(d.getUTCHours())+':'+ pad(d.getUTCMinutes())+':'+ pad(d.getUTCSeconds())+'Z'
+
+# scopes given code into a new function
+exports.scoped = (code) ->
+  code = String(code)
+  code = "function () {#{code}}" unless code.indexOf('function') is 0
+  code = "#{coffeescript_support} with(locals) {return (#{code}).apply(context, args);}"
+  new Function('context', 'locals', 'args', code)
+
+# converts the first character to uppercase and the remainder to lowercase
+exports.capitalize = (word) -> (word[0] || '').toUpperCase() + (word[1..-1] || '').toLowerCase()
