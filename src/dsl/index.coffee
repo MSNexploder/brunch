@@ -3,6 +3,7 @@ coffee = require 'coffee-script'
 path = require 'path'
 scoped = require('../helpers').scoped
 PathMatcher = require('./path_matcher').PathMatcher
+YamlConfig = require('./yaml_config').YamlConfig
 
 class DSL
   constructor: ->
@@ -54,3 +55,7 @@ exports.matchers = dsl.matchers
 
 exports.run = -> dsl.run.apply dsl, arguments
 exports.loadConfigFile = -> dsl.runFile.apply dsl, arguments
+
+exports.loadYamlConfigFile = (path, options) ->
+  yaml = new YamlConfig(path, options)
+  yaml.toOptions()

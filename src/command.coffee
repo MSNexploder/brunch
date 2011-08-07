@@ -5,7 +5,6 @@ brunch      = require './brunch'
 helpers     = require './helpers'
 dsl         = require './dsl'
 colors      = require('../vendor/termcolors').colors
-yaml        = require 'yaml'
 fs          = require 'fs'
 _           = require 'underscore'
 
@@ -95,18 +94,9 @@ exports.loadDefaultArguments = ->
 
 # Load options from config file
 exports.loadConfigFile = (configPath, options) ->
-  try
-    opts = yaml.eval fs.readFileSync(configPath, 'utf8')
-
-    options.stitch ?= {}
-    options.stitch.dependencies = opts.dependencies if opts.dependencies?
-    options.stitch.templateExtension = opts.templateExtension if opts.templateExtension?
-    options.stitch.minify = opts.minify if opts.minify?
-
-    options.buildPath = opts.buildPath if opts.buildPath?
-
-    options
-  catch e
+  if path.existsSync(configPath)
+    dsl.loadYamlConfigFile configPath, options
+  else
     helpers.log colors.lred("brunch:   Couldn't find config.yaml file\n", true)
     process.exit 0
 

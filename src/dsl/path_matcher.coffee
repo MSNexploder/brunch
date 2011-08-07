@@ -9,6 +9,7 @@ class exports.PathMatcher
 
   use: (compiler, options = {}) ->
     @name = compiler
+    _.extend(@options, options)
     @
 
   output: (path) ->
