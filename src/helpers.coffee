@@ -143,6 +143,3 @@ exports.scoped = (code) ->
   code = "function () {#{code}}" unless code.indexOf('function') is 0
   code = "#{coffeescript_support} with(locals) {return (#{code}).apply(context, args);}"
   new Function('context', 'locals', 'args', code)
-
-# converts the first character to uppercase and the remainder to lowercase
-exports.capitalize = (word) -> (word[0] || '').toUpperCase() + (word[1..-1] || '').toLowerCase()

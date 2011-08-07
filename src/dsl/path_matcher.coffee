@@ -1,5 +1,4 @@
 _ = require 'underscore'
-capitalize = require('../helpers').capitalize
 
 class exports.PathMatcher
   constructor: (paths) ->
