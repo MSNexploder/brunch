@@ -19,14 +19,17 @@ expressProcess = {}
 # add test for base template as well (obstacle: zombie currently doesn't support file://)
 module.exports = testCase(
   setUp: (callback) ->
-    options =
+    stitch =
       templateExtension: 'eco'
+      minify: false
+    
+    options =
+      stitch: stitch
       rootPath: 'brunch'
       buildPath: 'brunch/build'
-      minify: false
 
     brunch.new options, ->
-      options.dependencies = [
+      options.stitch.dependencies = [
         'ConsoleDummy.js',
         'jquery-1.6.2.js',
         'underscore-1.1.7.js',

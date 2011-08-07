@@ -54,21 +54,21 @@ exports.run = ->
     options = exports.loadOptionsFromArguments opts, options
     brunch.new options, ->
       configPath = exports.generateConfigPath opts[1]
-      options = _.extend(options, exports.loadConfigFile(configPath) )
+      options = exports.loadConfigFile configPath, options
       options = exports.loadOptionsFromArguments opts, options
       brunch.build options
   ).help('Create new brunch project')
 
   parser.command('build').callback( (opts) ->
     configPath = exports.generateConfigPath opts[1]
-    options = _.extend(options, exports.loadConfigFile(configPath) )
+    options = exports.loadConfigFile configPath, options
     options = exports.loadOptionsFromArguments opts, options
     brunch.build options
   ).help('Build a brunch project')
 
   parser.command('watch').callback( (opts) ->
     configPath = exports.generateConfigPath opts[1]
-    options = _.extend(options, exports.loadConfigFile(configPath) )
+    options = exports.loadConfigFile configPath, options
     options = exports.loadOptionsFromArguments opts, options
     brunch.watch options
   ).help('Watch brunch directory and rebuild if something changed')
@@ -81,27 +81,40 @@ exports.generateConfigPath = (appPath) ->
 # Load default options
 exports.loadDefaultArguments = ->
   # buildPath is created in loadOptionsFromArguments
-  options =
+  stitch =
     templateExtension: 'eco'
-    rootPath: 'brunch'
     dependencies: []
     minify: false
+
+  options =
+    stitch: stitch
+    rootPath: 'brunch'
+
   options
 
 # Load options from config file
-exports.loadConfigFile = (configPath) ->
+exports.loadConfigFile = (configPath, options) ->
   try
-    options = yaml.eval fs.readFileSync(configPath, 'utf8')
-    return options
+    opts = yaml.eval fs.readFileSync(configPath, 'utf8')
+
+    options.stitch ?= {}
+    options.stitch.dependencies = opts.dependencies if opts.dependencies?
+    options.stitch.templateExtension = opts.templateExtension if opts.templateExtension?
+    options.stitch.minify = opts.minify if opts.minify?
+
+    options.buildPath = opts.buildPath if opts.buildPath?
+
+    options
   catch e
     helpers.log colors.lred("brunch:   Couldn't find config.yaml file\n", true)
     process.exit 0
 
 # Load options from arguments
 exports.loadOptionsFromArguments = (opts, options) ->
-  options.templateExtension = opts.templateExtension if opts.templateExtension?
+  options.stitch ?= {}
+  options.stitch.templateExtension = opts.templateExtension if opts.templateExtension?
+  options.stitch.minify = opts.minify if opts.minify?
   options.rootPath = opts[1] if opts[1]?
-  options.minify = opts.minify if opts.minify?
   if opts.output?
     options.buildPath = opts.output
   else unless options.buildPath?

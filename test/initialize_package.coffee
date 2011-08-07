@@ -8,7 +8,8 @@ module.exports = testCase(
     test.expect 2
 
     options = {}
-    options.dependencies = [
+    options.stitch = {}
+    options.stitch.dependencies = [
       'ConsoleDummy.js',
       'jquery-1.6.2.js',
       'underscore-1.1.7.js',

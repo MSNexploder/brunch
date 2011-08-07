@@ -15,7 +15,7 @@ class exports.StitchCompiler extends Compiler
     @vendorPath = path.join(options.rootPath, 'src/vendor')
 
   filePattern: ->
-    [/\.coffee$/, /src\/.*\.js$/, new RegExp("#{@options.templateExtension}$")]
+    [/\.coffee$/, /src\/.*\.js$/, new RegExp("#{@options.stitch.templateExtension}$")]
 
   compile: (files) ->
     # update package dependencies in case a dependency was added or removed
@@ -27,7 +27,7 @@ class exports.StitchCompiler extends Compiler
         helpers.log "#{colors.lgray(err, true)}\n"
       else
         helpers.log "stitch:   #{colors.green('compiled', true)} application\n"
-        source = @minify source if @options.minify
+        source = @minify source if @options.stitch.minify
         fs.writeFile(path.join(@options.buildPath, 'web/js/app.js'), source, (err) =>
           if err?
             helpers.log "brunch:   #{colors.lred('Couldn\'t write compiled file.', true)}\n"
@@ -47,10 +47,10 @@ class exports.StitchCompiler extends Compiler
     filenames = fs.readdirSync @vendorPath
     filenames = helpers.filterFiles filenames, @vendorPath
 
-    args = @options.dependencies.slice()
+    args = @options.stitch.dependencies.slice()
     args.unshift filenames
     additionalLibaries = _.without.apply @, args
-    dependencies = @options.dependencies.concat additionalLibaries
+    dependencies = @options.stitch.dependencies.concat additionalLibaries
     _.map dependencies, (filename) => path.join(@vendorPath, filename)
 
   minify: (source) ->
