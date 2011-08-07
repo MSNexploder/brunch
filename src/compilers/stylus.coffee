@@ -14,7 +14,7 @@ catch error
 class exports.StylusCompiler extends Compiler
 
   filePattern: ->
-    [/\.styl$/]
+    @options.stylus.filePattern
 
   compile: (files) ->
     mainFilePath = path.join(@options.rootPath, 'src/app/styles/main.styl')
@@ -35,7 +35,7 @@ class exports.StylusCompiler extends Compiler
           if err?
             helpers.log colors.lred('stylus err: ' + err)
           else
-            fs.writeFile(path.join(@options.buildPath, 'web/css/main.css'), css, 'utf8', (err) =>
+            fs.writeFile(@options.stylus.output, css, 'utf8', (err) =>
               if err?
                 helpers.log colors.lred('stylus err: ' + err)
               else

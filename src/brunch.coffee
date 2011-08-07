@@ -2,6 +2,7 @@
 
 root = __dirname + "/../"
 # External dependencies.
+_         = require 'underscore'
 fs        = require 'fs'
 path      = require 'path'
 helpers   = require './helpers'
@@ -34,7 +35,7 @@ exports.new = (options, callback) ->
       helpers.log "brunch:   #{colors.green('created ', true)} brunch directory layout\n"
 
 # file watcher
-exports.watch  = (options) ->
+exports.watch = (options) ->
   exports.options = options
   exports.createBuildDirectories(exports.options.buildPath)
   exports.initializeCompilers()
@@ -77,9 +78,13 @@ exports.createExampleIndex = (filePath, buildPath) ->
 </html>"
   fs.writeFileSync(filePath, index)
 
-# initializes all avaliable compilers
+# initializes all used compilers
 exports.initializeCompilers = ->
-  compilers = (new compiler(exports.options) for name, compiler of require('./compilers'))
+  compilers = for name, options of exports.options
+    # fix for legacy options
+    continue if _.include ['buildPath', 'rootPath'], name
+    compiler = require('./compilers')[["#{helpers.capitalize name}Compiler"]]
+    new compiler(exports.options)
 
 exports.createBuildDirectories = (buildPath) ->
   fileUtil.mkdirsSync path.join(buildPath, 'web/js'), 0755

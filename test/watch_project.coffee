@@ -20,9 +20,10 @@ expressProcess = {}
 module.exports = testCase(
   setUp: (callback) ->
     stitch =
-      templateExtension: 'eco'
+      filePattern: [/\.coffee$/, /src\/.*\.js$/, /\.eco$/]
       minify: false
-    
+      output: 'brunch/build/web/js/app.js'
+
     options =
       stitch: stitch
       rootPath: 'brunch'
@@ -53,7 +54,7 @@ module.exports = testCase(
 
   'creates a valid brunch app': (test) ->
     test.expect 1
-
+  
     zombie.visit('http://localhost:8080', (err, browser, status) ->
       throw err.message if err
       test.strictEqual browser.html('h1'), '<h1>brunch</h1>'
@@ -88,7 +89,7 @@ module.exports = testCase(
   'app should work properly when minified': (test) ->
     test.expect 1
 
-    options.minify = true
+    options.stitch.minify = true
 
     brunch.watch options
     setTimeout(
