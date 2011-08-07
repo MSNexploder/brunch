@@ -8,7 +8,7 @@ testHelpers = require './lib/testHelpers'
 exports.newProject =
   default: testCase(
     setUp: (callback) ->
-      brunch.new {projectTemplate: "base", templateExtension: "eco", brunchPath: 'brunch', buildPath: 'brunch/build'}, callback
+      brunch.new {projectTemplate: "base", templateExtension: "eco", rootPath: 'brunch', buildPath: 'brunch/build'}, callback
     tearDown: (callback) ->
       testHelpers.removeDirectory 'brunch', callback
     'default': (test) ->
@@ -21,13 +21,13 @@ exports.newProject =
   )
   nestedDirectories: testCase(
     setUp: (callback) ->
-      brunch.new {projectTemplate: 'base', templateExtension: 'eco', brunchPath: 'js/client', buildPath: 'js/output'}, callback
+      brunch.new {projectTemplate: 'base', templateExtension: 'eco', rootPath: 'js/client', buildPath: 'js/output'}, callback
     tearDown: (callback) ->
       testHelpers.removeDirectory 'js', callback
     'nested directory': (test) ->
       test.expect 2
       brunchStat = fs.statSync 'js/client/src'
-      test.strictEqual typeof(brunchStat), 'object', 'directory provided by nested brunchPath has been created'
+      test.strictEqual typeof(brunchStat), 'object', 'directory provided by nested rootPath has been created'
       buildStat = fs.statSync 'js/output'
       test.strictEqual typeof(buildStat), 'object', 'build directory has been created in js/output'
       test.done()

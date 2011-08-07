@@ -12,7 +12,7 @@ class exports.StitchCompiler extends Compiler
 
   constructor: (options) ->
     super options
-    @vendorPath = path.join(options.brunchPath, 'src/vendor')
+    @vendorPath = path.join(options.rootPath, 'src/vendor')
 
   filePattern: ->
     [/\.coffee$/, /src\/.*\.js$/, new RegExp("#{@options.templateExtension}$")]
@@ -38,7 +38,7 @@ class exports.StitchCompiler extends Compiler
   package: ->
     @_package ?= stitch.createPackage (
       dependencies: @collectDependencies()
-      paths: [path.join(@options.brunchPath, 'src/app/')]
+      paths: [path.join(@options.rootPath, 'src/app/')]
     )
 
   # generate list of dependencies and preserve order of brunch libaries

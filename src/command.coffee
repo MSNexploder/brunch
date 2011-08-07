@@ -83,7 +83,7 @@ exports.loadDefaultArguments = ->
   # buildPath is created in loadOptionsFromArguments
   options =
     templateExtension: 'eco'
-    brunchPath: 'brunch'
+    rootPath: 'brunch'
     dependencies: []
     minify: false
   options
@@ -100,12 +100,12 @@ exports.loadConfigFile = (configPath) ->
 # Load options from arguments
 exports.loadOptionsFromArguments = (opts, options) ->
   options.templateExtension = opts.templateExtension if opts.templateExtension?
-  options.brunchPath = opts[1] if opts[1]?
+  options.rootPath = opts[1] if opts[1]?
   options.minify = opts.minify if opts.minify?
   if opts.output?
     options.buildPath = opts.output
   else unless options.buildPath?
-    options.buildPath = path.join options.brunchPath, 'build'
+    options.buildPath = path.join options.rootPath, 'build'
   options
 
 # Print the '--help' usage message and exit.

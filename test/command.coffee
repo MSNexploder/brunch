@@ -16,7 +16,7 @@ exports.commandLine =
 
     options = command.loadOptionsFromArguments opts, {}
     test.strictEqual options.templateExtension, 'haml', 'options should include given templateExtension'
-    test.strictEqual options.brunchPath, 'client', 'options should include given brunch path'
+    test.strictEqual options.rootPath, 'client', 'options should include given root path'
     test.strictEqual options.buildPath, 'app/build', 'options should include given build path'
     test.strictEqual options.minify, true, 'options should include true minify'
     test.done()
@@ -27,7 +27,7 @@ exports.commandLine =
     opts =
       '1': 'client'
     options = command.loadOptionsFromArguments opts, {}
-    test.strictEqual options.buildPath, 'client/build', 'options should contain brunch path + build if build path is not provided'
+    test.strictEqual options.buildPath, 'client/build', 'options should contain root path + build if build path is not provided'
 
     opts =
       '1': 'client'
@@ -41,7 +41,7 @@ exports.commandLine =
 
     options = command.loadDefaultArguments()
     test.strictEqual options.templateExtension, 'eco', 'default templateExtension should be eco'
-    test.strictEqual options.brunchPath, 'brunch', 'default brunchPath should be brunch'
+    test.strictEqual options.rootPath, 'brunch', 'default rootPath should be brunch'
     test.strictEqual options.minify, false, 'default minify option should be false'
     test.done()
 

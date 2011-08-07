@@ -14,7 +14,7 @@ module.exports = testCase(
       'underscore-1.1.7.js',
       'backbone-0.5.2.js'
     ]
-    options.brunchPath = 'test/fixtures/base'
+    options.rootPath = 'test/fixtures/base'
 
     compiler = new StitchCompiler options
 

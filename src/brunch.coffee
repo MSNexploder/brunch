@@ -20,16 +20,16 @@ exports.new = (options, callback) ->
 
   templatePath = path.join(module.id, "/../../template/base")
 
-  path.exists exports.options.brunchPath, (exists) ->
+  path.exists exports.options.rootPath, (exists) ->
     if exists
       helpers.log colors.lred("brunch:   directory already exists - can't create a project in there\n", true)
       process.exit 0
 
-    fileUtil.mkdirsSync exports.options.brunchPath, 0755
+    fileUtil.mkdirsSync exports.options.rootPath, 0755
     fileUtil.mkdirsSync exports.options.buildPath, 0755
 
-    helpers.recursiveCopy templatePath, exports.options.brunchPath, ->
-      exports.createExampleIndex path.join(exports.options.brunchPath, 'index.html'), exports.options.buildPath
+    helpers.recursiveCopy templatePath, exports.options.rootPath, ->
+      exports.createExampleIndex path.join(exports.options.rootPath, 'index.html'), exports.options.buildPath
       callback()
       helpers.log "brunch:   #{colors.green('created ', true)} brunch directory layout\n"
 
@@ -40,7 +40,7 @@ exports.watch  = (options) ->
   exports.initializeCompilers()
 
   # let's watch
-  helpers.watchDirectory(path: path.join(exports.options.brunchPath, 'src'), callOnAdd: true, (file) ->
+  helpers.watchDirectory(path: path.join(exports.options.rootPath, 'src'), callOnAdd: true, (file) ->
     exports.dispatch(file)
   )
 
@@ -57,9 +57,9 @@ exports.build = (options) ->
 exports.createExampleIndex = (filePath, buildPath) ->
 
   # fixing relativ path
-  brunchPath = path.join exports.options.brunchPath, '/'
-  if buildPath.indexOf(brunchPath) == 0
-    relativePath = buildPath.substr brunchPath.length
+  rootPath = path.join exports.options.rootPath, '/'
+  if buildPath.indexOf(rootPath) == 0
+    relativePath = buildPath.substr rootPath.length
   else
     relativePath = path.join '..', buildPath
 

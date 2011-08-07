@@ -17,7 +17,7 @@ class exports.StylusCompiler extends Compiler
     [/\.styl$/]
 
   compile: (files) ->
-    mainFilePath = path.join(@options.brunchPath, 'src/app/styles/main.styl')
+    mainFilePath = path.join(@options.rootPath, 'src/app/styles/main.styl')
 
     fs.readFile(mainFilePath, 'utf8', (err, data) =>
       if err?
@@ -26,7 +26,7 @@ class exports.StylusCompiler extends Compiler
         compiler = stylus(data)
           .set('filename', mainFilePath)
           .set('compress', true)
-          .include(path.join(@options.brunchPath, 'src'))
+          .include(path.join(@options.rootPath, 'src'))
 
         if nib
           compiler.use nib

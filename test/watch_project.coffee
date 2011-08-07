@@ -13,7 +13,7 @@ expressProcess = {}
 
 # TODO split into smaller tests
 # watching in general (generate a valid brunch app)
-# watching with a nested brunch path
+# watching with a nested root path
 # add check if dispatch is called when js, coffee, styl, template file change
 # add check for different buildPath
 # add test for base template as well (obstacle: zombie currently doesn't support file://)
@@ -21,7 +21,7 @@ module.exports = testCase(
   setUp: (callback) ->
     options =
       templateExtension: 'eco'
-      brunchPath: 'brunch'
+      rootPath: 'brunch'
       buildPath: 'brunch/build'
       minify: false
 
