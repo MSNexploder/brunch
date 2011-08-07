@@ -22,4 +22,5 @@ class exports.YamlConfig
     # workaround for legacy buildPath setting
     options = dsl.run config_string
     options.buildPath = @data.buildPath || @options.buildPath
+    options.rootPath = @options.rootPath
     options
