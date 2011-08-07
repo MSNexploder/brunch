@@ -1,11 +1,11 @@
 _ = require 'underscore'
 
 class exports.PathMatcher
-  constructor: (paths) ->
-    paths = if _.isArray(paths) then paths else [paths]
+  constructor: (filePattern) ->
+    filePattern = if _.isArray(filePattern) then filePattern else [filePattern]
 
     @options =
-      paths: paths
+      filePattern: filePattern
 
   use: (compiler, options = {}) ->
     @name = compiler
