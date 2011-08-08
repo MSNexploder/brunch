@@ -43,7 +43,7 @@ options = {}
 # overwrite options from the config file. In this case you are able to have
 # reasonable defaults and changed only the options you need to change in this particular case.
 exports.run = ->
-  brunch.ROOT_PATH = process.argv[2] if process.argv[2]?
+  brunch.ROOT_PATH = process.argv[3] if process.argv[3]?
 
   parser.globalOpts globalOpts
   parser.scriptName 'brunch <command> [<path>]'
@@ -76,6 +76,8 @@ exports.generateRootPath = (appPath) ->
 
 # Load options from config file
 exports.loadConfigFile = (rootPath, options) ->
+  options.rootPath = rootPath;
+
   coffee_config = path.join(rootPath, 'config.coffee')
   yaml_config = path.join(rootPath, 'config.yaml')
   if path.existsSync coffee_config

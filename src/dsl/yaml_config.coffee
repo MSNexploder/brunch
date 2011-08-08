@@ -14,6 +14,7 @@ class exports.YamlConfig
   toOptions: ->
     _.defaults(@data, @options.stitch)
     @data.buildPath ?= @options.buildPath
+    @data.buildPath ?= path.join @options.rootPath, 'build'
     @data.rootPath = @options.rootPath
 
     config_string = """
