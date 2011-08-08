@@ -13,10 +13,7 @@ class exports.StitchCompiler extends Compiler
 
   constructor: (options) ->
     super options
-    @vendorPath = path.join(options.rootPath, 'src/vendor')
-
-  filePattern: ->
-    @options.stitch.filePattern
+    @vendorPath = 'src/vendor/'
 
   compile: (files) ->
     # update package dependencies in case a dependency was added or removed
@@ -28,14 +25,14 @@ class exports.StitchCompiler extends Compiler
         helpers.log "#{colors.lgray(err, true)}\n"
       else
         helpers.log "stitch:   #{colors.green('compiled', true)} application\n"
-        source = @minify source if @options.stitch.minify
-        @writeToFile @options.stitch.output, source
+        source = @minify source if @options.minify
+        @writeToFile @options.output, source
     )
 
   package: ->
     @_package ?= stitch.createPackage (
       dependencies: @collectDependencies()
-      paths: [path.join(@options.rootPath, 'src/app/')]
+      paths: ['src/app/']
     )
 
   # generate list of dependencies and preserve order of brunch libaries
@@ -44,10 +41,10 @@ class exports.StitchCompiler extends Compiler
     filenames = fs.readdirSync @vendorPath
     filenames = helpers.filterFiles filenames, @vendorPath
 
-    args = @options.stitch.dependencies.slice()
+    args = @options.dependencies.slice()
     args.unshift filenames
     additionalLibaries = _.without.apply @, args
-    dependencies = @options.stitch.dependencies.concat additionalLibaries
+    dependencies = @options.dependencies.concat additionalLibaries
     _.map dependencies, (filename) => path.join(@vendorPath, filename)
 
   minify: (source) ->

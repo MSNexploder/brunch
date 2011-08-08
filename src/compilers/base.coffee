@@ -8,8 +8,8 @@ class exports.Compiler
 
   constructor: (@options) ->
 
-  # should be overwritten by every compiler subclass
-  filePattern: -> []
+  filePattern: ->
+    @options.filePattern
 
   matchesFile: (file) ->
     _.any(@filePattern(), (pattern) -> file.match(pattern))

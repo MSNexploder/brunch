@@ -53,21 +53,20 @@ exports.run = ->
   parser.command('new').callback( (opts) ->
     root_path = exports.generateRootPath opts[1]
     brunch.new root_path, ->
-      rootPath = exports.generateRootPath opts[1]
-      options = exports.loadConfigFile rootPath, options
-      brunch.build options
+      options = exports.loadConfigFile root_path, options
+      brunch.build root_path, options
   ).help('Create new brunch project')
 
   parser.command('build').callback( (opts) ->
-    rootPath = exports.generateRootPath opts[1]
-    options = exports.loadConfigFile rootPath, options
-    brunch.build options
+    root_path = exports.generateRootPath opts[1]
+    options = exports.loadConfigFile root_path, options
+    brunch.build root_path, options
   ).help('Build a brunch project')
 
   parser.command('watch').callback( (opts) ->
-    rootPath = exports.generateRootPath opts[1]
-    options = exports.loadConfigFile rootPath, options
-    brunch.watch options
+    root_path = exports.generateRootPath opts[1]
+    options = exports.loadConfigFile root_path, options
+    brunch.watch root_path, options
   ).help('Watch brunch directory and rebuild if something changed')
 
   parser.parseArgs()

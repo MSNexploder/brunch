@@ -7,7 +7,6 @@ YamlConfig = require('./yaml_config').YamlConfig
 
 class DSL
   constructor: ->
-    @rootPath = '.'
     @matchers = []
     @context = {}
     @locals = {
@@ -19,7 +18,7 @@ class DSL
     }
 
   files: (paths...) ->
-    matcher = new PathMatcher(@rootPath, paths)
+    matcher = new PathMatcher(paths)
     @matchers.push matcher
     matcher
 

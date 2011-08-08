@@ -1,6 +1,6 @@
 require.paths.unshift __dirname + "/../lib"
 
-helpers  = require '../lib/helpers'
+helpers  = require 'helpers'
 testCase = require('nodeunit').testCase
 
 module.exports = testCase(

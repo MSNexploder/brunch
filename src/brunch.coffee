@@ -33,17 +33,19 @@ exports.new = (root_path, callback) ->
       helpers.log "brunch:   #{colors.green('created ', true)} brunch directory layout\n"
 
 # file watcher
-exports.watch = (options) ->
-  exports.initializeCompilers(options)
+exports.watch = (root_path, options) ->
+  process.chdir root_path
+  exports.initializeCompilers options 
 
   # let's watch
-  helpers.watchDirectory(path: path.join(options.rootPath, 'src'), callOnAdd: true, (file) ->
+  helpers.watchDirectory(path: 'src', callOnAdd: true, (file) ->
     exports.dispatch(file)
   )
 
 # building all files
-exports.build = (options) ->
-  exports.initializeCompilers(options)
+exports.build = (root_path, options) ->
+  process.chdir root_path
+  exports.initializeCompilers options
 
   for compiler in compilers
     compiler.compile(['.'])
@@ -72,7 +74,7 @@ exports.initializeCompilers = (options) ->
     # fix for legacy options
     continue if _.include ['buildPath', 'rootPath'], name
     compiler = require('./compilers')[["#{helpers.capitalize name}Compiler"]]
-    new compiler(options)
+    new compiler(settings)
 
 # dispatcher for file watching which determines which action needs to be done
 # according to the file that was changed/created/removed

@@ -14,11 +14,8 @@ catch error
 
 class exports.StylusCompiler extends Compiler
 
-  filePattern: ->
-    @options.stylus.filePattern
-
   compile: (files) ->
-    mainFilePath = path.join(@options.rootPath, 'src/app/styles/main.styl')
+    mainFilePath = 'src/app/styles/main.styl'
 
     fs.readFile(mainFilePath, 'utf8', (err, data) =>
       if err?
@@ -27,7 +24,7 @@ class exports.StylusCompiler extends Compiler
         compiler = stylus(data)
           .set('filename', mainFilePath)
           .set('compress', true)
-          .include(path.join(@options.rootPath, 'src'))
+          .include('src')
 
         if nib
           compiler.use nib
@@ -36,7 +33,7 @@ class exports.StylusCompiler extends Compiler
           if err?
             helpers.log colors.lred('stylus err: ' + err)
           else
-            @writeToFile @options.stylus.output, css, (err) =>
+            @writeToFile @options.output, css, (err) =>
               if err?
                 helpers.log colors.lred('stylus err: ' + err)
               else

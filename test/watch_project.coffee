@@ -10,6 +10,7 @@ spawn     = require('child_process').spawn
 
 options = {}
 expressProcess = {}
+original_path = process.cwd()
 
 # TODO split into smaller tests
 # watching in general (generate a valid brunch app)
@@ -22,12 +23,10 @@ module.exports = testCase(
     stitch =
       filePattern: [/\.coffee$/, /src\/.*\.js$/, /\.eco$/]
       minify: false
-      output: 'brunch/build/web/js/app.js'
+      output: 'build/web/js/app.js'
 
     options =
       stitch: stitch
-      rootPath: 'brunch'
-      buildPath: 'brunch/build'
 
     brunch.new 'brunch', ->
       options.stitch.dependencies = [
@@ -36,7 +35,7 @@ module.exports = testCase(
         'underscore-1.1.7.js',
         'backbone-0.5.2.js'
       ]
-      brunch.watch options
+      brunch.watch 'brunch', options
 
       expressProcess = spawn('node', [ path.join(__dirname, 'server', 'server.js'), '8080',
          path.join(__dirname, '..', 'brunch')
@@ -50,11 +49,13 @@ module.exports = testCase(
 
   tearDown: (callback) ->
     expressProcess.kill 'SIGHUP' unless expressProcess is {}
+
+    process.chdir original_path
     testHelpers.removeDirectory 'brunch', callback
 
   'creates a valid brunch app': (test) ->
     test.expect 1
-  
+
     zombie.visit('http://localhost:8080', (err, browser, status) ->
       throw err.message if err
       test.strictEqual browser.html('h1'), '<h1>brunch</h1>'
@@ -64,10 +65,10 @@ module.exports = testCase(
   'update package dependencies when file has been added': (test) ->
     test.expect 1
 
-    fs.writeFileSync('brunch/src/vendor/anotherLib.js', '//anotherLib', 'utf8')
+    fs.writeFileSync('src/vendor/anotherLib.js', '//anotherLib', 'utf8')
     setTimeout(
       ->
-        app = fs.readFileSync('brunch/build/web/js/app.js', 'utf8')
+        app = fs.readFileSync('build/web/js/app.js', 'utf8')
         test.ok app.match(/\/\/anotherLib/), 'app.js contains content of new created file anotherLib'
         test.done()
       500
@@ -76,11 +77,11 @@ module.exports = testCase(
   'update package dependencies when file has been removed': (test) ->
     test.expect 1
 
-    fs.writeFileSync('brunch/src/vendor/anotherLib.js', '//anotherLib', 'utf8')
-    fs.unlinkSync('brunch/src/vendor/anotherLib.js')
+    fs.writeFileSync('src/vendor/anotherLib.js', '//anotherLib', 'utf8')
+    fs.unlinkSync('src/vendor/anotherLib.js')
     setTimeout(
       ->
-        app = fs.readFileSync('brunch/build/web/js/app.js', 'utf8')
+        app = fs.readFileSync('build/web/js/app.js', 'utf8')
         test.ok (not app.match(/\/\/anotherLib/)), 'app.js contains content of new created file anotherLib'
         test.done()
       500
@@ -91,7 +92,7 @@ module.exports = testCase(
 
     options.stitch.minify = true
 
-    brunch.watch options
+    brunch.watch '.', options
     setTimeout(
       ->
         zombie.visit('http://localhost:8080', (err, browser, status) ->
