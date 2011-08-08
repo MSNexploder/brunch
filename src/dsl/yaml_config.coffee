@@ -16,10 +16,11 @@ class exports.YamlConfig
     @data.buildPath ?= 'build'
 
     config_string = """
-      files([/\\.styl$/]).use('stylus').output('#{path.join(@data.buildPath, 'web/css/main.css')}')
+      buildPath('#{@data.buildPath}')
+      files([/\\.styl$/]).use('stylus').output('web/css/main.css')
       files([/\\.coffee$/, /src\\/.*\\.js$/, new RegExp("#{@data.templateExtension}$")])
         .use('stitch', { minify: #{@data.minify}, dependencies: #{util.inspect @data.dependencies} })
-        .output('#{path.join(@data.buildPath, 'web/js/app.js')}')
+        .output('web/js/app.js')
     """
 
     dsl.run config_string

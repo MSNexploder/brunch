@@ -2,9 +2,10 @@ _ = require 'underscore'
 path = require 'path'
 
 class exports.PathMatcher
-  constructor: (filePattern) ->
+  constructor: (dsl, filePattern) ->
     filePattern = _.flatten [filePattern]
 
+    @dsl = dsl
     @options =
       filePattern: filePattern
 
@@ -14,4 +15,4 @@ class exports.PathMatcher
     @
 
   output: (filePath) ->
-    @options.output = filePath
+    @options.output = path.join(@dsl._buildPath, filePath)

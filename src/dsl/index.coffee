@@ -8,10 +8,12 @@ YamlConfig  = require('./yaml_config').YamlConfig
 
 class DSL
   constructor: ->
+    @_buildPath = 'build'
     @matchers = []
     @context = {}
     @locals = {
-      files: => @files.apply this, arguments
+      files: => @files.apply @, arguments
+      buildPath: => @buildPath.apply @, arguments
       require: require
       global: global
       process: process
@@ -19,9 +21,13 @@ class DSL
     }
 
   files: (paths...) ->
-    matcher = new PathMatcher(paths)
+    matcher = new PathMatcher(@, paths)
     @matchers.push matcher
     matcher
+
+  buildPath: (path) ->
+    @_buildPath = path
+    @
 
   defineWith: (code) ->
     helpers.scoped(code)(@context, @locals)
