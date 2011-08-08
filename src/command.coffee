@@ -43,8 +43,6 @@ options = {}
 # overwrite options from the config file. In this case you are able to have
 # reasonable defaults and changed only the options you need to change in this particular case.
 exports.run = ->
-  brunch.ROOT_PATH = process.argv[3] if process.argv[3]?
-
   parser.globalOpts globalOpts
   parser.scriptName 'brunch <command> [<path>]'
   parser.printFunc usage

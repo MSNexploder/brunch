@@ -32,20 +32,20 @@ class exports.StitchCompiler extends Compiler
   package: ->
     @_package ?= stitch.createPackage (
       dependencies: @collectDependencies()
-      paths: ['src/app/']
+      paths: [@generatePath('src/app/')]
     )
 
   # generate list of dependencies and preserve order of brunch libaries
   # like defined in options.dependencies
   collectDependencies: ->
-    filenames = fs.readdirSync @vendorPath
-    filenames = helpers.filterFiles filenames, @vendorPath
+    filenames = fs.readdirSync @generatePath(@vendorPath)
+    filenames = helpers.filterFiles filenames, @generatePath(@vendorPath)
 
     args = @options.dependencies.slice()
     args.unshift filenames
     additionalLibaries = _.without.apply @, args
     dependencies = @options.dependencies.concat additionalLibaries
-    _.map dependencies, (filename) => path.join(@vendorPath, filename)
+    _.map dependencies, (filename) => @generatePath path.join(@vendorPath, filename)
 
   minify: (source) ->
       helpers.log "uglify:   #{colors.green('minified', true)} application\n"

@@ -7,6 +7,7 @@ fileUtil = require 'file'
 class exports.Compiler
 
   constructor: (@options) ->
+    @rootPath = @options.rootPath || process.cwd()
 
   filePattern: ->
     @options.filePattern
@@ -17,8 +18,14 @@ class exports.Compiler
   # should be overwritten by every compiler subclass
   compile: (files) -> #NOOP
 
+  # generates path suitable for useage within the compiler
+  # should be used prior every file handling done within the compiler
+  generatePath: (dirPath) ->
+    path.resolve @rootPath, dirPath
+
   # writes content to file - creates intermediate directories as needed
   writeToFile: (filePath, content, callback) ->
+    filePath = @generatePath filePath
     dirPath = path.dirname(filePath)
     fileUtil.mkdirs dirPath, 0755, (err) =>
       if err?

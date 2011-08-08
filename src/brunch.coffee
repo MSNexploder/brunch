@@ -11,9 +11,6 @@ colors    = require('../vendor/termcolors').colors
 # the current brunch version number
 exports.VERSION = require('./package').version
 
-# base directory of the current project
-exports.ROOT_PATH = '.'
-
 # available compilers
 compilers = []
 

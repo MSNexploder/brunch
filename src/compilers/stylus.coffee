@@ -15,7 +15,7 @@ catch error
 class exports.StylusCompiler extends Compiler
 
   compile: (files) ->
-    mainFilePath = 'src/app/styles/main.styl'
+    mainFilePath = @generatePaths('src/app/styles/main.styl')
 
     fs.readFile(mainFilePath, 'utf8', (err, data) =>
       if err?
@@ -24,7 +24,7 @@ class exports.StylusCompiler extends Compiler
         compiler = stylus(data)
           .set('filename', mainFilePath)
           .set('compress', true)
-          .include('src')
+          .include(@generatePaths('src/'))
 
         if nib
           compiler.use nib
