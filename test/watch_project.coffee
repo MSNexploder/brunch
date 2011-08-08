@@ -29,7 +29,7 @@ module.exports = testCase(
       rootPath: 'brunch'
       buildPath: 'brunch/build'
 
-    brunch.new options, ->
+    brunch.new 'brunch', ->
       options.stitch.dependencies = [
         'ConsoleDummy.js',
         'jquery-1.6.2.js',

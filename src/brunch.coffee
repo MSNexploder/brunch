@@ -18,21 +18,18 @@ exports.ROOT_PATH = '.'
 compilers = []
 
 # project skeleton generator
-exports.new = (options, callback) ->
-  exports.options = options
+exports.new = (root_path, callback) ->
+  template_path = path.join(module.id, "/../../template/base")
 
-  templatePath = path.join(module.id, "/../../template/base")
-
-  path.exists exports.options.rootPath, (exists) ->
+  path.exists root_path, (exists) ->
     if exists
       helpers.log colors.lred("brunch:   directory already exists - can't create a project in there\n", true)
       process.exit 0
 
-    fileUtil.mkdirsSync exports.options.rootPath, 0755
+    fileUtil.mkdirsSync root_path, 0755
 
-    helpers.recursiveCopy templatePath, exports.options.rootPath, ->
-      exports.createExampleIndex path.join(exports.options.rootPath, 'index.html'), exports.options.buildPath
-      callback()
+    helpers.recursiveCopy template_path, root_path, ->
+      exports.createExampleIndex path.join(root_path, 'index.html'), callback
       helpers.log "brunch:   #{colors.green('created ', true)} brunch directory layout\n"
 
 # file watcher
@@ -54,28 +51,22 @@ exports.build = (options) ->
     compiler.compile(['.'])
 
 # creates an example index.html for brunch with the correct relative path to the build directory
-exports.createExampleIndex = (filePath, buildPath) ->
-
-  # fixing relative path
-  rootPath = path.join exports.options.rootPath, '/'
-  if buildPath.indexOf(rootPath) == 0
-    relativePath = buildPath.substr rootPath.length
-  else
-    relativePath = path.join '..', buildPath
-
-  index = "<!doctype html>\n
-<html lang=\"en\">\n
-<head>\n
-  <meta charset=\"utf-8\">\n
-  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge,chrome=1\">\n
-  <link rel=\"stylesheet\" href=\"#{ path.join(relativePath, 'web/css/main.css') }\" type=\"text/css\" media=\"screen\">\n
-  <script src=\"#{ path.join(relativePath, 'web/js/app.js') }\"></script>\n
-  <script>require('main');</script>\n
-</head>\n
-<body>\n
-</body>\n
-</html>"
-  fs.writeFileSync(filePath, index)
+exports.createExampleIndex = (filePath, callback) ->
+  index = """
+    <!doctype html>
+    <html lang="en">
+    <head>
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <link rel="stylesheet" href="build/web/css/main.css" type="text/css" media="screen">
+      <script src="build/web/js/app.js"></script>
+      <script>require('main');</script>
+    </head>
+    <body>
+    </body>
+    </html>
+  """
+  fs.writeFile(filePath, index, callback)
 
 # initializes all used compilers
 exports.initializeCompilers = ->

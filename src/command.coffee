@@ -51,7 +51,8 @@ exports.run = ->
 
   # create new brunch app and build it after all files were copied
   parser.command('new').callback( (opts) ->
-    brunch.new options, ->
+    root_path = exports.generateRootPath opts[1]
+    brunch.new root_path, ->
       rootPath = exports.generateRootPath opts[1]
       options = exports.loadConfigFile rootPath, options
       brunch.build options

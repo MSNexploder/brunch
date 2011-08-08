@@ -8,7 +8,7 @@ testHelpers = require './lib/testHelpers'
 exports.newProject =
   default: testCase(
     setUp: (callback) ->
-      brunch.new {projectTemplate: "base", templateExtension: "eco", rootPath: 'brunch', buildPath: 'brunch/build'}, callback
+      brunch.new 'brunch', callback
     tearDown: (callback) ->
       testHelpers.removeDirectory 'brunch', callback
     'default': (test) ->
@@ -19,7 +19,7 @@ exports.newProject =
   )
   nestedDirectories: testCase(
     setUp: (callback) ->
-      brunch.new {projectTemplate: 'base', templateExtension: 'eco', rootPath: 'js/client', buildPath: 'js/output'}, callback
+      brunch.new 'js/client', callback
     tearDown: (callback) ->
       testHelpers.removeDirectory 'js', callback
     'nested directory': (test) ->
