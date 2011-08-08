@@ -5,46 +5,6 @@ command = require('../lib/command')
 # TODO add tests for run
 
 exports.commandLine =
-  'load options from arguments': (test) ->
-    test.expect 4
-
-    opts =
-      '1': 'client'
-      templateExtension: 'haml'
-      output: 'app/build'
-      minify: true
-
-    options = command.loadOptionsFromArguments opts, {}
-    test.strictEqual options.stitch.templateExtension, 'haml', 'options should include given templateExtension'
-    test.strictEqual options.rootPath, 'client', 'options should include given root path'
-    test.strictEqual options.buildPath, 'app/build', 'options should include given build path'
-    test.strictEqual options.stitch.minify, true, 'options should include true minify'
-    test.done()
-
-  'generate correct build path': (test) ->
-    test.expect 2
-
-    opts =
-      '1': 'client'
-    options = command.loadOptionsFromArguments opts, {}
-    test.strictEqual options.buildPath, 'client/build', 'options should contain root path + build if build path is not provided'
-
-    opts =
-      '1': 'client'
-    options = command.loadOptionsFromArguments opts, { buildPath: 'output' }
-    test.strictEqual options.buildPath, 'output', 'buildPath shouldn\'t be overwritten'
-
-    test.done()
-
-  'load default options': (test) ->
-    test.expect 3
-
-    options = command.loadDefaultArguments()
-    test.strictEqual options.stitch.templateExtension, 'eco', 'default templateExtension should be eco'
-    test.strictEqual options.rootPath, 'brunch', 'default rootPath should be brunch'
-    test.strictEqual options.stitch.minify, false, 'default minify option should be false'
-    test.done()
-
   'load options from config file': (test) ->
     test.expect 2
 

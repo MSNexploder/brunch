@@ -3,6 +3,7 @@ path      = require 'path'
 helpers   = require '../helpers'
 colors    = require('../../vendor/termcolors').colors
 stylus    = require 'stylus'
+brunch    = require '../brunch'
 
 Compiler = require('./base').Compiler
 

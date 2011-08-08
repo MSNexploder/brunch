@@ -43,7 +43,7 @@ options = {}
 # overwrite options from the config file. In this case you are able to have
 # reasonable defaults and changed only the options you need to change in this particular case.
 exports.run = ->
-  options = exports.loadDefaultArguments()
+  brunch.ROOT_PATH = process.argv[2] if process.argv[2]?
 
   parser.globalOpts globalOpts
   parser.scriptName 'brunch <command> [<path>]'
@@ -51,24 +51,20 @@ exports.run = ->
 
   # create new brunch app and build it after all files were copied
   parser.command('new').callback( (opts) ->
-    options = exports.loadOptionsFromArguments opts, options
     brunch.new options, ->
       rootPath = exports.generateRootPath opts[1]
-      options = exports.loadOptionsFromArguments opts, options
       options = exports.loadConfigFile rootPath, options
       brunch.build options
   ).help('Create new brunch project')
 
   parser.command('build').callback( (opts) ->
     rootPath = exports.generateRootPath opts[1]
-    options = exports.loadOptionsFromArguments opts, options
     options = exports.loadConfigFile rootPath, options
     brunch.build options
   ).help('Build a brunch project')
 
   parser.command('watch').callback( (opts) ->
     rootPath = exports.generateRootPath opts[1]
-    options = exports.loadOptionsFromArguments opts, options
     options = exports.loadConfigFile rootPath, options
     brunch.watch options
   ).help('Watch brunch directory and rebuild if something changed')
@@ -77,20 +73,6 @@ exports.run = ->
 
 exports.generateRootPath = (appPath) ->
   if appPath? then appPath else 'brunch/' # shouldn't we use the current dir as default root path?
-
-# Load default options
-exports.loadDefaultArguments = ->
-  # buildPath is created in loadOptionsFromArguments
-  stitch =
-    templateExtension: 'eco'
-    dependencies: []
-    minify: false
-
-  options =
-    stitch: stitch
-    rootPath: 'brunch'
-
-  options
 
 # Load options from config file
 exports.loadConfigFile = (rootPath, options) ->
@@ -103,18 +85,6 @@ exports.loadConfigFile = (rootPath, options) ->
   else
     helpers.log colors.lred("brunch:   Couldn't find config.yaml file\n", true)
     process.exit 0
-
-# Load options from arguments
-exports.loadOptionsFromArguments = (opts, options) ->
-  options.stitch ?= {}
-  options.stitch.templateExtension = opts.templateExtension if opts.templateExtension?
-  options.stitch.minify = opts.minify if opts.minify?
-  options.rootPath = opts[1] if opts[1]?
-  if opts.output?
-    options.buildPath = opts.output
-  else unless options.buildPath?
-    options.buildPath = path.join options.rootPath, 'build'
-  options
 
 # Print the '--help' usage message and exit.
 usage = ->

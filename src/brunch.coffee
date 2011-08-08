@@ -1,6 +1,5 @@
 # brunch can be used via command-line tool or manually by calling run(options).
 
-root = __dirname + "/../"
 # External dependencies.
 _         = require 'underscore'
 fs        = require 'fs'
@@ -11,6 +10,9 @@ colors    = require('../vendor/termcolors').colors
 
 # the current brunch version number
 exports.VERSION = require('./package').version
+
+# base directory of the current project
+exports.ROOT_PATH = '.'
 
 # available compilers
 compilers = []

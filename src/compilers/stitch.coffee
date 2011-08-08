@@ -5,6 +5,7 @@ colors    = require('../../vendor/termcolors').colors
 stitch    = require 'stitch'
 uglify    = require 'uglify-js'
 _         = require 'underscore'
+brunch    = require '../brunch'
 
 Compiler = require('./base').Compiler
 
