@@ -20,7 +20,7 @@ class exports.Compiler
   # writes content to file - creates intermediate directories as needed
   writeToFile: (filePath, content, callback) ->
     dirPath = path.dirname(filePath)
-    fileUtil.mkdirs dirPath, 0775, (err) =>
+    fileUtil.mkdirs dirPath, 0755, (err) =>
       if err?
         helpers.log "brunch:   #{colors.lred('Couldn\'t create build path.', true)}\n"
         helpers.log "#{colors.lgray(err, true)}\n"

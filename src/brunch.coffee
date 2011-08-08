@@ -56,7 +56,7 @@ exports.build = (options) ->
 # creates an example index.html for brunch with the correct relative path to the build directory
 exports.createExampleIndex = (filePath, buildPath) ->
 
-  # fixing relativ path
+  # fixing relative path
   rootPath = path.join exports.options.rootPath, '/'
   if buildPath.indexOf(rootPath) == 0
     relativePath = buildPath.substr rootPath.length
