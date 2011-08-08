@@ -1,9 +1,10 @@
-fs = require 'fs'
-coffee = require 'coffee-script'
-path = require 'path'
-scoped = require('../helpers').scoped
+fs          = require 'fs'
+coffee      = require 'coffee-script'
+path        = require 'path'
+helpers     = require '../helpers'
+colors      = require('../../vendor/termcolors').colors
 PathMatcher = require('./path_matcher').PathMatcher
-YamlConfig = require('./yaml_config').YamlConfig
+YamlConfig  = require('./yaml_config').YamlConfig
 
 class DSL
   constructor: ->
@@ -23,7 +24,7 @@ class DSL
     matcher
 
   defineWith: (code) ->
-    scoped(code)(@context, @locals)
+    helpers.scoped(code)(@context, @locals)
 
   readAndCompile: (file) ->
     code = @read file
@@ -56,5 +57,6 @@ exports.matchers = dsl.matchers
 exports.run = -> dsl.run.apply dsl, arguments
 exports.loadConfigFile = -> dsl.runFile.apply dsl, arguments
 exports.loadYamlConfigFile = (path, options) ->
+  helpers.log colors.lred("brunch:   old yaml based config file found! Please switch to new coffee-script based configuration!\n", true)
   yaml = new YamlConfig(path, options)
   yaml.toOptions()
