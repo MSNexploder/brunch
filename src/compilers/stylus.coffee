@@ -36,10 +36,9 @@ class exports.StylusCompiler extends Compiler
           if err?
             helpers.log colors.lred('stylus err: ' + err)
           else
-            fs.writeFile(@options.stylus.output, css, 'utf8', (err) =>
+            @writeToFile @options.stylus.output, css, (err) =>
               if err?
                 helpers.log colors.lred('stylus err: ' + err)
               else
                 helpers.log "stylus:   #{colors.green('compiled', true)} main.css\n"
-            )
     )

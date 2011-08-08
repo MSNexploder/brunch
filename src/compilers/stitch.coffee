@@ -29,11 +29,7 @@ class exports.StitchCompiler extends Compiler
       else
         helpers.log "stitch:   #{colors.green('compiled', true)} application\n"
         source = @minify source if @options.stitch.minify
-        fs.writeFile(@options.stitch.output, source, (err) =>
-          if err?
-            helpers.log "brunch:   #{colors.lred('Couldn\'t write compiled file.', true)}\n"
-            helpers.log "#{colors.lgray(err, true)}\n"
-        )
+        @writeToFile @options.stitch.output, source
     )
 
   package: ->

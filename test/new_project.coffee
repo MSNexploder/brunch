@@ -12,11 +12,9 @@ exports.newProject =
     tearDown: (callback) ->
       testHelpers.removeDirectory 'brunch', callback
     'default': (test) ->
-      test.expect 2
+      test.expect 1
       brunchStat = fs.statSync 'brunch'
       test.strictEqual typeof(brunchStat), 'object', 'directory has been created'
-      buildStat = fs.statSync 'brunch/build'
-      test.strictEqual typeof(buildStat), 'object', 'build directory has been created in brunch/build'
       test.done()
   )
   nestedDirectories: testCase(
@@ -25,10 +23,8 @@ exports.newProject =
     tearDown: (callback) ->
       testHelpers.removeDirectory 'js', callback
     'nested directory': (test) ->
-      test.expect 2
+      test.expect 1
       brunchStat = fs.statSync 'js/client/src'
       test.strictEqual typeof(brunchStat), 'object', 'directory provided by nested rootPath has been created'
-      buildStat = fs.statSync 'js/output'
-      test.strictEqual typeof(buildStat), 'object', 'build directory has been created in js/output'
       test.done()
   )

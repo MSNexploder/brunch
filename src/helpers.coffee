@@ -71,7 +71,6 @@ exports.recursiveCopy = (source, destination, callback) ->
     else
       callback err, paths.sort()
 
-
 # copied source from watch_dir, because it did not work as package
 exports.watchDirectory = (_opts, callback) ->
   opts = _.extend(

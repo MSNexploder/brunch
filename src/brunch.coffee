@@ -29,7 +29,6 @@ exports.new = (options, callback) ->
       process.exit 0
 
     fileUtil.mkdirsSync exports.options.rootPath, 0755
-    fileUtil.mkdirsSync exports.options.buildPath, 0755
 
     helpers.recursiveCopy templatePath, exports.options.rootPath, ->
       exports.createExampleIndex path.join(exports.options.rootPath, 'index.html'), exports.options.buildPath
@@ -39,7 +38,6 @@ exports.new = (options, callback) ->
 # file watcher
 exports.watch = (options) ->
   exports.options = options
-  exports.createBuildDirectories(exports.options.buildPath)
   exports.initializeCompilers()
 
   # let's watch
@@ -50,7 +48,6 @@ exports.watch = (options) ->
 # building all files
 exports.build = (options) ->
   exports.options = options
-  exports.createBuildDirectories(exports.options.buildPath)
   exports.initializeCompilers()
 
   for compiler in compilers
@@ -87,10 +84,6 @@ exports.initializeCompilers = ->
     continue if _.include ['buildPath', 'rootPath'], name
     compiler = require('./compilers')[["#{helpers.capitalize name}Compiler"]]
     new compiler(exports.options)
-
-exports.createBuildDirectories = (buildPath) ->
-  fileUtil.mkdirsSync path.join(buildPath, 'web/js'), 0755
-  fileUtil.mkdirsSync path.join(buildPath, 'web/css'), 0755
 
 # dispatcher for file watching which determines which action needs to be done
 # according to the file that was changed/created/removed
