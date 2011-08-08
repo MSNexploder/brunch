@@ -54,15 +54,7 @@ dsl = new DSL
 exports.matchers = dsl.matchers
 
 exports.run = -> dsl.run.apply dsl, arguments
-exports.loadConfigFile = (path, options) ->
-  dsl.rootPath = options.rootPath
-  opts = dsl.runFile(path)
-
-  # workaround for legacy buildPath setting
-  opts.buildPath = options.buildPath
-  opts.rootPath = options.rootPath
-  opts
-
+exports.loadConfigFile = -> dsl.runFile.apply dsl, arguments
 exports.loadYamlConfigFile = (path, options) ->
   yaml = new YamlConfig(path, options)
   yaml.toOptions()

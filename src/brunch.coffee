@@ -68,8 +68,6 @@ exports.createExampleIndex = (filePath, callback) ->
 # initializes all used compilers
 exports.initializeCompilers = (options) ->
   compilers = for name, settings of options
-    # fix for legacy options
-    continue if _.include ['buildPath', 'rootPath'], name
     compiler = require('./compilers')[["#{helpers.capitalize name}Compiler"]]
     new compiler(settings)
 

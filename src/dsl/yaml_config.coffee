@@ -13,9 +13,7 @@ class exports.YamlConfig
 
   toOptions: ->
     _.defaults(@data, @options.stitch)
-    @data.buildPath ?= @options.buildPath
     @data.buildPath ?= 'build'
-    @data.rootPath = @options.rootPath
 
     config_string = """
       files([/\\.styl$/]).use('stylus').output('#{path.join(@data.buildPath, 'web/css/main.css')}')
@@ -24,8 +22,4 @@ class exports.YamlConfig
         .output('#{path.join(@data.buildPath, 'web/js/app.js')}')
     """
 
-    # workaround for legacy buildPath setting
-    options = dsl.run config_string
-    options.buildPath = @data.buildPath
-    options.rootPath = @data.rootPath
-    options
+    dsl.run config_string
