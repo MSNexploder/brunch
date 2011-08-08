@@ -80,6 +80,4 @@ exports.initializeCompilers = ->
 # according to the file that was changed/created/removed
 exports.dispatch = (file) ->
   for compiler in compilers
-    if compiler.matchesFile(file)
-      compiler.fileChanged(file)
-      break
+    compiler.fileChanged(file) if compiler.matchesFile(file)
