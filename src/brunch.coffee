@@ -34,18 +34,16 @@ exports.new = (root_path, callback) ->
 
 # file watcher
 exports.watch = (options) ->
-  exports.options = options
-  exports.initializeCompilers()
+  exports.initializeCompilers(options)
 
   # let's watch
-  helpers.watchDirectory(path: path.join(exports.options.rootPath, 'src'), callOnAdd: true, (file) ->
+  helpers.watchDirectory(path: path.join(options.rootPath, 'src'), callOnAdd: true, (file) ->
     exports.dispatch(file)
   )
 
 # building all files
 exports.build = (options) ->
-  exports.options = options
-  exports.initializeCompilers()
+  exports.initializeCompilers(options)
 
   for compiler in compilers
     compiler.compile(['.'])
@@ -69,12 +67,12 @@ exports.createExampleIndex = (filePath, callback) ->
   fs.writeFile(filePath, index, callback)
 
 # initializes all used compilers
-exports.initializeCompilers = ->
-  compilers = for name, options of exports.options
+exports.initializeCompilers = (options) ->
+  compilers = for name, settings of options
     # fix for legacy options
     continue if _.include ['buildPath', 'rootPath'], name
     compiler = require('./compilers')[["#{helpers.capitalize name}Compiler"]]
-    new compiler(exports.options)
+    new compiler(options)
 
 # dispatcher for file watching which determines which action needs to be done
 # according to the file that was changed/created/removed
