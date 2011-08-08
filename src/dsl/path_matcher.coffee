@@ -15,4 +15,5 @@ class exports.PathMatcher
     @
 
   output: (filePath) ->
-    @options.output = path.join(@dsl._buildPath, filePath)
+    # if absolute path just use it, if relative path prepend additional build path
+    @options.output = (if filePath[0] == '/') then filePath else path.join(@dsl._buildPath, filePath)

@@ -2,6 +2,7 @@ _ = require 'underscore'
 path = require 'path'
 fs = require 'fs'
 helpers = require '../helpers'
+colors = require('../../vendor/termcolors').colors
 fileUtil = require 'file'
 
 class exports.Compiler
